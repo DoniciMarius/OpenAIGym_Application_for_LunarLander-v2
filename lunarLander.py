@@ -22,7 +22,7 @@ class LunarLander():
 			self.action_space.append(noa)
 		self.count_equal_states = 0 # XXX
 		self.cumulative_reward = 0 # XXX
-		self.filename = os.path.join("/Users/matthiaswettstein/CloudStation/Hack/Python/Udacity/MLE/06P_Capstone/03_lunarLander", "q_matrix.csv") # XXX
+		self.filename = os.path.join("/Users/matthiaswettstein/CloudStation/Hack/Python/Udacity/MLE/06P_Capstone/01_Material", "q_matrix.csv") # XXX
 			
 	def best_action_select(self, state=None, epsilon=None):
 		# initialize state tuple key in dictionary
@@ -93,7 +93,7 @@ class LunarLander():
 						w.writerows(self.Q_matrix.items())
 	
 def main():
-	l = LunarLander(0.1, 0.8, 0.01, 1, 1)
+	l = LunarLander(0.1, 0.8, 0.01, 1, 1000)
 	l.train()
 	
 if __name__ == '__main__':
