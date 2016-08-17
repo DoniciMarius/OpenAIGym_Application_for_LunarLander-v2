@@ -93,7 +93,7 @@ class LunarLander():
 						w.writerows(self.Q_matrix.items())
 	
 def main():
-	l = LunarLander(0.1, 0.8, 0.01, 1, 1000)
+	l = LunarLander(0.1, 0.8, 0.01, 1000, 10000)
 	l.train()
 	
 if __name__ == '__main__':
