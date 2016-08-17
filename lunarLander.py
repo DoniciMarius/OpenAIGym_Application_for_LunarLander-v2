@@ -24,6 +24,7 @@ class LunarLander():
 		# Naive state reduction
 		self.rounding_factor = rounding_factor 
 		self.state_length = state_length 
+		self.best_episode_cumulative_reward = -1000 #XXX
 			
 			
 	def best_action_select(self, state=None, epsilon=None):
@@ -80,7 +81,11 @@ class LunarLander():
 				episode_cumulative_reward += reward # Sum up rewards
 					
 				if done:
-					count_equal_states = 0 # Control state space explosion
+					# Check for best reward ever
+					if episode_cumulative_reward >= self.best_episode_cumulative_reward:
+						self.best_episode_cumulative_reward = episode_cumulative_reward
+					# Control state space explosion
+					count_equal_states = 0 
 					for k in self.Q_matrix.iterkeys(): 
 						checksum = 0
 						for w, u in self.Q_matrix[k].iteritems():
@@ -88,13 +93,15 @@ class LunarLander():
 								checksum += 1
 						if checksum > 1:
 							count_equal_states += 1
-							
+					
 					# Show performance metrics
 					print " \nEpisode {} \
 							\nEpisode Reward: {} \
+							\nBest Episode Reward: {} \
 							\nEpisode finished after {} timesteps \
 							\n{} out of {} Q-matrix states are repeatedly used ({percent:.2%})".format(e, \
 						episode_cumulative_reward, \
+						self.best_episode_cumulative_reward, \
 						t+1, \
 						count_equal_states, \
 						len(self.Q_matrix), \
@@ -108,7 +115,7 @@ class LunarLander():
 						w.writerows(self.Q_matrix.items())
 	
 def main():
-	l = LunarLander(0.1, 0.8, 0.01, 100, 100, 2, 3) # 100, 1000, maximum digits are 15, maximum length is 8
+	l = LunarLander(0.1, 0.8, 0.01, 2, 1000, 1, 8) # 100, 1000, maximum digits are 15, maximum length is 8
 	l.train()
 	
 if __name__ == '__main__':
