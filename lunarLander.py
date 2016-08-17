@@ -20,9 +20,9 @@ class LunarLander():
 		self.action_space = []
 		for noa in range(int(repr(self.env.action_space)[::-1][1:2])):
 			self.action_space.append(noa)
-		self.count_equal_states = 0 # XXX
-		self.cumulative_reward = 0 # XXX
-		self.filename = os.path.join("/Users/matthiaswettstein/CloudStation/Hack/Python/Udacity/MLE/06P_Capstone/01_Material", "q_matrix.csv") # XXX
+		self.count_equal_states = 0 # control state space explosion
+		self.cumulative_reward = 0 # control rewards
+		self.filename = os.path.join("/Users/matthiaswettstein/CloudStation/Hack/Python/Udacity/MLE/06P_Capstone/01_Material", "q_matrix.csv") # init file save
 			
 	def best_action_select(self, state=None, epsilon=None):
 		# initialize state tuple key in dictionary
@@ -70,9 +70,9 @@ class LunarLander():
 				action_t1 = self.best_action_select(state=self.state, epsilon=self.epsilon) ## (3)
 				Q_t1 = self.Q_matrix[self.state][action_t1] ## (4)
 				self.Q_matrix[state_t0][action] = Q_t0 + self.alpha * (reward + self.gamma * Q_t1 - Q_t0) ## (6)
-				# XXX
-				self.cumulative_reward += reward
-				for k, v in self.Q_matrix.iteritems():
+				self.cumulative_reward += reward # sum up rewards
+				# count re-used spaces
+				for k, v in self.Q_matrix.iteritems(): 
 					for w, u in self.Q_matrix[k].iteritems():
 						checksum = 0
 						if not u == 0:
